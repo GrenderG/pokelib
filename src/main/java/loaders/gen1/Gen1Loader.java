@@ -183,7 +183,7 @@ public class Gen1Loader {
                 BCDUtils.BCDToDecimal(Arrays.copyOfRange(saveInMemory, 0x25F3, 0x25F3 + 0x3)),
                 (int) BCDUtils.BCDToDecimal(Arrays.copyOfRange(saveInMemory, 0x2850, 0x2850 + 0x2)),
                 TimeUtils.playedToMilliseconds(
-                        fixIndex(saveInMemory[0x2CED]) + fixIndex(saveInMemory[0x2CEE]) * 256,
+                        fixIndex(saveInMemory[0x2CED]) + fixIndex(saveInMemory[0x2CED + 0x1]) * 256,
                         fixIndex(saveInMemory[0x2CEF]),
                         fixIndex(saveInMemory[0x2CF0])
                 ),
