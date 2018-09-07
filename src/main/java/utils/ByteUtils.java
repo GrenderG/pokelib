@@ -10,4 +10,18 @@ public class ByteUtils {
         }
         return data;
     }
+
+    // Converts unsigned byte array to int
+    public static int bytesToInt(byte[] bytes) {
+        int res = 0;
+        for (byte b : bytes) {
+            res = (res << 8) + (b & 0xFF);
+        }
+        return res;
+    }
+
+    // Converts unsigned byte to int
+    public static int byteToInt(byte b) {
+        return b & 0xFF;
+    }
 }
