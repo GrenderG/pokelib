@@ -1,4 +1,4 @@
-package loaders.gen1;
+package types.gen1;
 
 import models.*;
 import utils.BCDUtils;
@@ -12,24 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Gen1Loader {
-    private static final String[] encodingTable = {
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", " ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "(", ")",
-            ":", ";", "[", "]", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
-            "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "'", "", "", "-", "", "", "?", "!", ".", "", "", "", "", "", "", "",
-            "", "", ".", "/", ",", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
-    };
-
     private byte[] saveInMemory;
 
     public boolean loadSaveInMemory(File saveFile) {
@@ -45,18 +27,9 @@ public class Gen1Loader {
     public String decode(byte[] hexList) {
         final StringBuilder decoded = new StringBuilder();
         for (byte b : hexList) {
-            decoded.append(encodingTable[Integer.parseInt(String.format("%02X", b), 16)]);
+            decoded.append(Data.encodingTable[Integer.parseInt(String.format("%02X", b), 16)]);
         }
         return decoded.toString();
-    }
-
-    public byte[] encode(String string) {
-        final StringBuilder encoded = new StringBuilder();
-        final List<String> tempList = Arrays.asList(encodingTable);
-        for (char c : string.toCharArray()) {
-            encoded.append(String.valueOf(Integer.valueOf(String.valueOf(tempList.indexOf(String.valueOf(c))), 16)));
-        }
-        return ByteUtils.hexStringToByteArray(encoded.toString());
     }
 
     private Item[] generateItemContainer(int hexStartAddress, int size) {
@@ -152,7 +125,7 @@ public class Gen1Loader {
             else
                 offset = 0x4000 + i / 6 * 8192 + 1122 * (i % 6);
             for (int j = 0; j < 20; j++) {
-                byte[] pokemon = loadPokemonBytes(offset + 0x1 + j, offset + 682 + 0xB * j, offset + 902 + 0xB * j, offset + 22 + 0x21 * j, true);
+                byte[] pokemon = loadPokemonBytes(offset + 0x1 + j, offset + 683 + 0xB * j, offset + 902 + 0xB * j, offset + 22 + 0x21 * j, true);
                 pokemons[20 * i + j] = decodePokemon(pokemon, true);
             }
         }
