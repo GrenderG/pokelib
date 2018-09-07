@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class Test {
     public static void main (String args[]) {
         Gen1Loader loader = new Gen1Loader();
-        loader.loadSaveInMemory(new File("pkr.sav"));
+        loader.loadSaveInMemory(new File("/home/grender/Desktop/pk/pktest/pkr.sav"));
         Player player = loader.getPlayer();
 
         System.out.println(player.getId());

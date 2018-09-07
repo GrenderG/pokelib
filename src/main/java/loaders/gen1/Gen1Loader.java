@@ -65,14 +65,14 @@ public class Gen1Loader {
         return indexToFix;
     }
 
-    private long decodePlayerId() {
+    /*private long decodePlayerId() {
         long id = 0;
         byte[] encodedId = Arrays.copyOfRange(saveInMemory, 0x2605, 0x2605 + 0x2);
         for (byte b : encodedId) {
             id = (id << 8) + (b & 0xFF);
         }
         return id;
-    }
+    }*/
 
     private Item[] generateItemContainer(int hexStartAddress, int size) {
         Item[] items = new Item[size];
@@ -177,15 +177,15 @@ public class Gen1Loader {
 
     public Player getPlayer() {
         return new Player(
-                decodePlayerId(),
+                fixIndex(saveInMemory[0x2605 + 0x1]) + fixIndex(saveInMemory[0x2605]) * 256,
                 decode(Arrays.copyOfRange(saveInMemory, 0x2598, 0x2598 + 0xB)),
                 decode(Arrays.copyOfRange(saveInMemory, 0x25F6, 0x25F6 + 0xB)),
                 BCDUtils.BCDToDecimal(Arrays.copyOfRange(saveInMemory, 0x25F3, 0x25F3 + 0x3)),
                 (int) BCDUtils.BCDToDecimal(Arrays.copyOfRange(saveInMemory, 0x2850, 0x2850 + 0x2)),
                 TimeUtils.playedToMilliseconds(
-                        saveInMemory[0x2CED] + saveInMemory[0x2CEE],
-                        saveInMemory[0x2CEF],
-                        saveInMemory[0x2CF0]
+                        fixIndex(saveInMemory[0x2CED]) + fixIndex(saveInMemory[0x2CEE]) * 256,
+                        fixIndex(saveInMemory[0x2CEF]),
+                        fixIndex(saveInMemory[0x2CF0])
                 ),
                 generateItemContainer(0x25C9, 19),
                 generateItemContainer(0x27E6 , 49),
