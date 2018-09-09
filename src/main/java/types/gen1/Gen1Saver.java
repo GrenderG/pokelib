@@ -197,7 +197,9 @@ public class Gen1Saver {
 
         saveInMemory[offset] = ByteUtils.intToByte(items.length);
         System.arraycopy(ByteUtils.genNullByteArray(0x01 + 2 * totalCount), 0, saveInMemory, offset + 0x1, 0x01 + 2 * totalCount);
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < totalCount; i++) {
+            if (items[i] == null)
+                break;
             byte itemIndex = ByteUtils.intToByte(items[i].getIndex());
             byte quantity = ByteUtils.intToByte(items[i].getQuantity());
 

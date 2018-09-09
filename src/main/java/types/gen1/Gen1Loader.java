@@ -47,6 +47,8 @@ public class Gen1Loader {
 
         for (int i = 0; i < items.length; i++) {
             int itemIndex = ByteUtils.byteToInt(saveInMemory[hexStartAddress + 0x1 + 0x2 * i]);
+            if (itemIndex == 255)
+                items[i] = null;
             items[i] = new Item(
                     itemIndex, Data.items[itemIndex],
                     ByteUtils.byteToInt(saveInMemory[hexStartAddress + 0x2 + 0x2 * i])

@@ -22,14 +22,16 @@ public class Test {
         System.out.println(player.getCasinoChips());
         System.out.println(TimeUnit.MILLISECONDS.toHours(player.getTimePlayedInMillis()));
 
-        //player.setId(7331);
-        player.setMoney(1337);
-        player.setName("Holapio");
-        player.setTimePlayedInMillis(TimeUtils.playedToMilliseconds(255, 16, 51));
-        player.getBag()[5].setIndex(10);
-        player.getBag()[5].setQuantity(13);
-        player.getPartyPokemon()[0].setNickname("HOLA");
-        player.getPcPokemon()[0].setNickname("PORFA");
+        player.setTimePlayedInMillis(2);
+        player.setId(1337);
+        player.setName("Pepe");
+        player.setMoney(999678);
+        player.setRivalName("Tonto");
+        player.getPartyPokemon()[5].setBurned(true);
+        player.getPartyPokemon()[4].setNickname("Pepa");
+        player.getPartyPokemon()[3].setLevelRepr(100);
+        player.getPartyPokemon()[3].setCurrentLevel(100);
+        player.getPartyPokemon()[4].setNickname("Alola");
 
         try {
             byte[] ns = new Gen1Saver().applyChanges(loader, player);
