@@ -9,14 +9,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 
 public class Gen1Loader {
+    private byte[] originalSaveInMemory;
     private byte[] saveInMemory;
 
     public boolean loadSaveInMemory(File saveFile) {
         try {
             saveInMemory = Files.readAllBytes(saveFile.toPath());
+            originalSaveInMemory = new byte[saveInMemory.length];
+            System.arraycopy(saveInMemory, 0, originalSaveInMemory, 0, saveInMemory.length);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -24,7 +26,15 @@ public class Gen1Loader {
         }
     }
 
-    public String decode(byte[] hexList) {
+    public byte[] getSaveInMemory() {
+        return saveInMemory;
+    }
+
+    public byte[] getOriginalSaveInMemory() {
+        return originalSaveInMemory;
+    }
+
+    private String decode(byte[] hexList) {
         final StringBuilder decoded = new StringBuilder();
         for (byte b : hexList) {
             decoded.append(Data.encodingTable[Integer.parseInt(String.format("%02X", b), 16)]);
@@ -57,6 +67,9 @@ public class Gen1Loader {
 
     private Pokemon decodePokemon(byte[] pokemonBytes, boolean isBox) {
         int specieIndex = ByteUtils.byteToInt(pokemonBytes[0]);
+        if (specieIndex == 255)
+            return null;
+        int sprite = ByteUtils.byteToInt(pokemonBytes[23]);
         int type1Index = ByteUtils.byteToInt(pokemonBytes[28]);
         int type2Index = ByteUtils.byteToInt(pokemonBytes[29]);
         int move1Index = ByteUtils.byteToInt(pokemonBytes[31]);
@@ -66,7 +79,7 @@ public class Gen1Loader {
 
         return new Pokemon(
                 decode(Arrays.copyOfRange(pokemonBytes, 12, 22)),
-                new Specie(specieIndex, Data.pokemons[specieIndex]),
+                new Specie(specieIndex, sprite, Data.pokemons[specieIndex]),
                 ByteUtils.bytesToInt(Arrays.copyOfRange(pokemonBytes, 24, 25 + 1)),
                 ByteUtils.byteToInt(pokemonBytes[26]),
                 pokemonBytes[27] == 0x04,
@@ -125,7 +138,7 @@ public class Gen1Loader {
             else
                 offset = 0x4000 + i / 6 * 8192 + 1122 * (i % 6);
             for (int j = 0; j < 20; j++) {
-                byte[] pokemon = loadPokemonBytes(offset + 0x1 + j, offset + 683 + 0xB * j, offset + 902 + 0xB * j, offset + 22 + 0x21 * j, true);
+                byte[] pokemon = loadPokemonBytes(offset + 0x1 + j, offset + 682 + 0xB * j, offset + 902 + 0xB * j, offset + 22 + 0x21 * j, true);
                 pokemons[20 * i + j] = decodePokemon(pokemon, true);
             }
         }
@@ -146,7 +159,7 @@ public class Gen1Loader {
                         ByteUtils.byteToInt(saveInMemory[0x2CF0])
                 ),
                 generateItemContainer(0x25C9, 19),
-                generateItemContainer(0x27E6 , 49),
+                generateItemContainer(0x27E6, 49),
                 generatePartyPokemons(),
                 generatePcPokemons());
     }

@@ -2,14 +2,16 @@ package models;
 
 public class Specie {
     private int index;
+    private int sprite;
     private String name;
 
     public Specie() {
         // empty
     }
 
-    public Specie(int index, String name) {
+    public Specie(int index, int sprite, String name) {
         this.index = index;
+        this.sprite = sprite;
         this.name = name;
     }
 
@@ -27,5 +29,13 @@ public class Specie {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(int sprite) {
+        this.sprite = sprite;
     }
 }
