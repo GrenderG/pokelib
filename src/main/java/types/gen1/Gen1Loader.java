@@ -65,7 +65,7 @@ public class Gen1Loader {
         return pokemonBytes;
     }
 
-    private Pokemon decodePokemon(byte[] pokemonBytes, boolean isBox) {
+    public Pokemon decodePokemon(byte[] pokemonBytes, boolean isBox) {
         int specieIndex = ByteUtils.byteToInt(pokemonBytes[0]);
         if (specieIndex == 255)
             return null;

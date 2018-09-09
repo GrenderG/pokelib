@@ -78,7 +78,7 @@ public class Gen1Saver {
         return saveInMemory;
     }
 
-    private byte[] encodePokemon(Pokemon pokemon, boolean isBox) {
+    public byte[] encodePokemon(Pokemon pokemon, boolean isBox) {
         int size = isBox ? 56 : 67;
         byte[] encodedPokemon = new byte[size];
 
